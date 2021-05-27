@@ -113,9 +113,11 @@ namespace ElevenNote.WebAPI
                     //
                     c.SingleApiVersion("v1", "ElevenNote.WebAPI");
 
-                    // If you want the output Swagger docs to be indented properly, enable the "PrettyPrint" option.
-                    //
-                    //c.PrettyPrint();
+                   // Enable adding Authorization header to [Authorize]d endpoints.
+                   c.OperationFilter(() => new AddAuthorizationHeaderParameterOperationFilter());
+
+                   //Show the programmatically generated /token endpoint in the UI.
+                   c.DocumentFilter<AuthTokenEndpointOperation>();
 
                     // If your API has multiple versions, use "MultipleApiVersions" instead of "SingleApiVersion".
                     // In this case, you must provide a lambda that tells Swashbuckle which actions should be
@@ -249,7 +251,7 @@ namespace ElevenNote.WebAPI
                     // with the same path (sans query string) and HTTP method. You can workaround this by providing a
                     // custom strategy to pick a winner or merge the descriptions for the purposes of the Swagger docs
                     //
-                    //c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                    c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 
                     // Wrap the default SwaggerGenerator with additional behavior (e.g. caching) or provide an
                     // alternative implementation for ISwaggerProvider with the CustomProvider option.
